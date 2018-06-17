@@ -16,6 +16,11 @@
         </configuration>
       </plugin>
     </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+    </resources>
   </build>
   <name>crawler</name>
   <url>http://maven.apache.org</url>
