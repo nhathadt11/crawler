@@ -1,9 +1,6 @@
 package study.nhatha.spider;
 
-import study.nhatha.middleware.ImageTagHandler;
-import study.nhatha.middleware.ReplaceAllHandler;
-import study.nhatha.middleware.TransformerMiddleware;
-import study.nhatha.middleware.UnwantedClosingATagHandler;
+import study.nhatha.middleware.*;
 import study.nhatha.util.NetUtils;
 import study.nhatha.util.XmlUtils;
 
@@ -35,6 +32,7 @@ public class MovieDetailSpider implements Runnable {
   @Override
   public void run() {
     System.out.println("GET / " + url);
+
     try (InputStream inputStream = NetUtils.connect(url)) {
       BufferedReader reader = toBufferedReader(inputStream);
       String html = normalize(reader, "");
@@ -50,6 +48,7 @@ public class MovieDetailSpider implements Runnable {
             .use(new ImageTagHandler())
             .use(new UnwantedClosingATagHandler())
             .use(new ReplaceAllHandler("itemscope", ""))
+            .use(BoundaryHandler.before("<!DOCTYPE div [<!ENTITY nbsp \"&#160;\">]>"))
             .apply();
 
         InputStream rulesIn = getResource(HD_MOVIE_STYLE_SHEET);
@@ -58,7 +57,7 @@ public class MovieDetailSpider implements Runnable {
         System.out.println(outputStream.toString());
       }
     } catch (IOException | TransformerException e) {
-      e.printStackTrace();
+      System.out.println("ERROR / " + e.getMessage());
     }
   }
 }

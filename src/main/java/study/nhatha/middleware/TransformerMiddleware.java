@@ -6,7 +6,7 @@ import java.util.List;
 public class TransformerMiddleware {
 
   @FunctionalInterface
-  interface Transform {
+  public interface Transform {
     String transform(String previous);
   }
 
