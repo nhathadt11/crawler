@@ -5,16 +5,11 @@ import study.nhatha.util.NetUtils;
 import study.nhatha.util.XmlUtils;
 
 import javax.xml.transform.TransformerException;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static study.nhatha.util.AppConstants.HD_MOVIE_STYLE_SHEET;
 import static study.nhatha.util.NetUtils.toBufferedReader;
-import static study.nhatha.util.ResourceUtils.getResource;
 import static study.nhatha.util.StringUtils.normalize;
 import static study.nhatha.util.StringUtils.toInputStream;
 
@@ -22,11 +17,18 @@ public class MovieDetailSpider implements Runnable {
   private String url;
   private String htmlFragmentExtractor;
   private int htmlFragmentExtractorGroupNumber;
+  private InputStream stylesheetStream;
 
-  public MovieDetailSpider(String url, String htmlFragmentExtractor, int htmlFragmentExtractorGroupNumber) {
+  public MovieDetailSpider(
+      String url,
+      String htmlFragmentExtractor,
+      int htmlFragmentExtractorGroupNumber,
+      InputStream stylesheetStream) {
+
     this.url = url;
     this.htmlFragmentExtractor = htmlFragmentExtractor;
     this.htmlFragmentExtractorGroupNumber = htmlFragmentExtractorGroupNumber;
+    this.stylesheetStream = stylesheetStream;
   }
 
   @Override
@@ -51,8 +53,7 @@ public class MovieDetailSpider implements Runnable {
             .use(BoundaryHandler.before("<!DOCTYPE div [<!ENTITY nbsp \"&#160;\">]>"))
             .apply();
 
-        InputStream rulesIn = getResource(HD_MOVIE_STYLE_SHEET);
-        OutputStream outputStream = XmlUtils.transform(toInputStream(processed), rulesIn);
+        OutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
 
         System.out.println(outputStream.toString());
       }

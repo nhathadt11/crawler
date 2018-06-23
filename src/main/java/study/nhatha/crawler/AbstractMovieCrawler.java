@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import static study.nhatha.util.NetUtils.connect;
 import static study.nhatha.util.NetUtils.toBufferedReader;
+import static study.nhatha.util.ResourceUtils.getResource;
 import static study.nhatha.util.StringUtils.normalize;
 
 public abstract class AbstractMovieCrawler implements Crawlable {
@@ -17,17 +18,20 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   private String pageUrlTemplate;
   private String detailLinkExtractor;
   private int detailLinkExtractorGroupNumber;
+  private String stylesheetPath;
 
   AbstractMovieCrawler(
       String baseUrl,
       String pageUrlTemplate,
       String detailLinkExtractor,
-      int detailLinkExtractorGroupNumber) {
+      int detailLinkExtractorGroupNumber,
+      String stylesheetPath) {
 
     this.baseUrl = baseUrl;
     this.pageUrlTemplate = pageUrlTemplate;
     this.detailLinkExtractor = detailLinkExtractor;
     this.detailLinkExtractorGroupNumber = detailLinkExtractorGroupNumber;
+    this.stylesheetPath = stylesheetPath;
   }
 
   public void crawl() throws IOException {
@@ -53,7 +57,8 @@ public abstract class AbstractMovieCrawler implements Crawlable {
             new MovieDetailSpider(
                 movieDetailLink,
                 movieDetailHtmlFragmentExtractor,
-                1
+                1,
+                getResource(stylesheetPath)
             )
         );
       }
