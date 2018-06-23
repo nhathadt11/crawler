@@ -5,7 +5,11 @@ import study.nhatha.util.NetUtils;
 import study.nhatha.util.XmlUtils;
 
 import javax.xml.transform.TransformerException;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,17 +22,20 @@ public class MovieDetailSpider implements Runnable {
   private String htmlFragmentExtractor;
   private int htmlFragmentExtractorGroupNumber;
   private InputStream stylesheetStream;
+  private List<TransformerMiddleware.Transform> tranforms;
 
   public MovieDetailSpider(
       String url,
       String htmlFragmentExtractor,
       int htmlFragmentExtractorGroupNumber,
-      InputStream stylesheetStream) {
+      InputStream stylesheetStream,
+      List<TransformerMiddleware.Transform> transforms) {
 
     this.url = url;
     this.htmlFragmentExtractor = htmlFragmentExtractor;
     this.htmlFragmentExtractorGroupNumber = htmlFragmentExtractorGroupNumber;
     this.stylesheetStream = stylesheetStream;
+    this.tranforms = transforms;
   }
 
   @Override
@@ -47,10 +54,7 @@ public class MovieDetailSpider implements Runnable {
 
         TransformerMiddleware middleware = new TransformerMiddleware(movieDetailHtmlFragment);
         String processed = middleware
-            .use(new ImageTagHandler())
-            .use(new UnwantedClosingATagHandler())
-            .use(new ReplaceAllHandler("itemscope", ""))
-            .use(BoundaryHandler.before("<!DOCTYPE div [<!ENTITY nbsp \"&#160;\">]>"))
+            .useAll(tranforms)
             .apply();
 
         OutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);

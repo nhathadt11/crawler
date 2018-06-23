@@ -1,10 +1,12 @@
 package study.nhatha.crawler;
 
+import study.nhatha.middleware.TransformerMiddleware;
 import study.nhatha.spider.MovieDetailSpider;
 import study.nhatha.util.ThreadUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +22,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   private int detailLinkExtractorGroupNumber;
   private String movieDetailHtmlFragmentExtractor;
   private String stylesheetPath;
+  private List<TransformerMiddleware.Transform> transforms;
 
   AbstractMovieCrawler(
       String baseUrl,
@@ -27,7 +30,8 @@ public abstract class AbstractMovieCrawler implements Crawlable {
       String detailLinkExtractor,
       int detailLinkExtractorGroupNumber,
       String movieDetailHtmlFragmentExtractor,
-      String stylesheetPath) {
+      String stylesheetPath,
+      List<TransformerMiddleware.Transform> transforms) {
 
     this.baseUrl = baseUrl;
     this.pageUrlTemplate = pageUrlTemplate;
@@ -35,6 +39,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
     this.detailLinkExtractorGroupNumber = detailLinkExtractorGroupNumber;
     this.movieDetailHtmlFragmentExtractor = movieDetailHtmlFragmentExtractor;
     this.stylesheetPath = stylesheetPath;
+    this.transforms = transforms;
   }
 
   public void crawl() throws IOException {
@@ -60,7 +65,8 @@ public abstract class AbstractMovieCrawler implements Crawlable {
                 movieDetailLink,
                 this.movieDetailHtmlFragmentExtractor,
                 1,
-                getResource(stylesheetPath)
+                getResource(stylesheetPath),
+                this.transforms
             )
         );
       }

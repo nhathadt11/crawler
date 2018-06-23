@@ -24,6 +24,11 @@ public class TransformerMiddleware {
     return this;
   }
 
+  public TransformerMiddleware useAll(List<Transform> transforms) {
+    transforms.forEach(this.transforms::add);
+    return this;
+  }
+
   public String apply() {
     transforms.forEach(transform -> raw = transform.transform(raw));
 
