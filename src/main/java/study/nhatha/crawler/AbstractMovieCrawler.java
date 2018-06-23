@@ -18,6 +18,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   private String pageUrlTemplate;
   private String detailLinkExtractor;
   private int detailLinkExtractorGroupNumber;
+  private String movieDetailHtmlFragmentExtractor;
   private String stylesheetPath;
 
   AbstractMovieCrawler(
@@ -25,12 +26,14 @@ public abstract class AbstractMovieCrawler implements Crawlable {
       String pageUrlTemplate,
       String detailLinkExtractor,
       int detailLinkExtractorGroupNumber,
+      String movieDetailHtmlFragmentExtractor,
       String stylesheetPath) {
 
     this.baseUrl = baseUrl;
     this.pageUrlTemplate = pageUrlTemplate;
     this.detailLinkExtractor = detailLinkExtractor;
     this.detailLinkExtractorGroupNumber = detailLinkExtractorGroupNumber;
+    this.movieDetailHtmlFragmentExtractor = movieDetailHtmlFragmentExtractor;
     this.stylesheetPath = stylesheetPath;
   }
 
@@ -51,12 +54,11 @@ public abstract class AbstractMovieCrawler implements Crawlable {
 
       while (matcher.find()) {
         String movieDetailLink = matcher.group(detailLinkExtractorGroupNumber);
-        String movieDetailHtmlFragmentExtractor = "(<div class=\"block-movie\".+?<\\/div>.+?)<div class=\"block-movie\"";
 
         ThreadUtils.start(
             new MovieDetailSpider(
                 movieDetailLink,
-                movieDetailHtmlFragmentExtractor,
+                this.movieDetailHtmlFragmentExtractor,
                 1,
                 getResource(stylesheetPath)
             )

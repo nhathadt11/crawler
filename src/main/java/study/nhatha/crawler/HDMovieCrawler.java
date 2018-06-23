@@ -8,8 +8,16 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
                          String pageUrlTemplate,
                          String detailLinkExtractor,
                          int detailLinkExtractorGroupNumber,
+                         String movieDetailHtmlFragmentExtractor,
                          String stylesheetPath) {
-    super(baseUrl, pageUrlTemplate, detailLinkExtractor, detailLinkExtractorGroupNumber, stylesheetPath);
+    super(
+        baseUrl,
+        pageUrlTemplate,
+        detailLinkExtractor,
+        detailLinkExtractorGroupNumber,
+        movieDetailHtmlFragmentExtractor,
+        stylesheetPath
+    );
   }
 
   public HDMovieCrawler() {
@@ -18,6 +26,7 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
         "trang-%d.html",
         "<div class=\"tn-bxitem\"><a href=\"(.+?)\"",
         1,
+        "(<div class=\"block-movie\".+?<\\/div>.+?)<div class=\"block-movie\"",
         AppConstants.HD_MOVIE_STYLE_SHEET
     );
   }
