@@ -31,5 +31,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>study.nhatha</groupId>
+      <artifactId>movie-persistent</artifactId>
+      <version>0.1</version>
+    </dependency>
   </dependencies>
 </project>

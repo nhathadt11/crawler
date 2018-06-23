@@ -1,6 +1,7 @@
 package study.nhatha.domain;
 
 public class Movie {
+  private long id;
   private String title;
   private int year;
   private String plot;
@@ -9,6 +10,14 @@ public class Movie {
   private float rating;
 
   public Movie() {
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getTitle() {
