@@ -1,14 +1,19 @@
 package study.nhatha.spider;
 
-import study.nhatha.middleware.*;
+import org.xml.sax.SAXException;
+import study.nhatha.middleware.TransformerMiddleware;
+import study.nhatha.util.AppConstants;
 import study.nhatha.util.NetUtils;
+import study.nhatha.util.StreamUtils;
 import study.nhatha.util.XmlUtils;
+import study.nhatha.validation.XmlValidationHandler;
+import study.nhatha.validation.XmlValidator;
 
 import javax.xml.transform.TransformerException;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,12 +62,28 @@ public class MovieDetailSpider implements Runnable {
             .useAll(tranforms)
             .apply();
 
-        OutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
+        ByteArrayOutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
 
-        System.out.println(outputStream.toString());
+        validateXml(StreamUtils.toInputStream(outputStream));
       }
     } catch (IOException | TransformerException e) {
       System.out.println("ERROR / " + e.getMessage());
     }
+  }
+
+  private void validateXml(InputStream xmlContent) {
+    XmlValidator xmlValidator = new XmlValidator(AppConstants.HD_MOVIE_SCHEMA, xmlContent, new XmlValidationHandler() {
+      @Override
+      public void onPassed() {
+        System.out.println("Passed\n");
+      }
+
+      @Override
+      public void onRejected(SAXException e) {
+        System.out.println("Rejected\n");
+      }
+    });
+
+    xmlValidator.validate();
   }
 }
