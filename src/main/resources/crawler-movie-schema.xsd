@@ -7,13 +7,13 @@
         <xs:element name="id" type="xs:long" minOccurs="0" />
         <xs:element name="title" type="xs:string" />
         <xs:element name="year" type="xs:unsignedShort" />
-        <xs:element name="genre" type="xs:token" />
-        <xs:element name="country" type="xs:token" />
+        <xs:element name="genre" type="xs:string" />
+        <xs:element name="country" type="xs:string" />
         <xs:element name="duration" type="xs:unsignedShort" />
-        <xs:element name="director" type="xs:token" />
+        <xs:element name="director" type="xs:string" />
         <xs:element name="rating" type="xs:decimal" />
         <xs:element name="plot" type="xs:string" />
-        <xs:element name="stars" type="xs:token" />
+        <xs:element name="stars" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

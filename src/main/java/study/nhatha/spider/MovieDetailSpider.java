@@ -3,6 +3,8 @@ package study.nhatha.spider;
 import org.xml.sax.SAXException;
 import study.nhatha.middleware.TransformerMiddleware;
 import study.nhatha.model.Movie;
+import study.nhatha.repository.HibernateMovieRepository;
+import study.nhatha.repository.MovieRepository;
 import study.nhatha.util.AppConstants;
 import study.nhatha.util.NetUtils;
 import study.nhatha.util.StreamUtils;
@@ -78,6 +80,7 @@ public class MovieDetailSpider implements Runnable {
       public void onPassed() {
         System.out.println("PASSED\n");
         Movie movie = XmlUtils.unmarshal(xmlContent, Movie.class);
+        persistToStorage(movie);
         System.out.println(movie.getTitle());
       }
 
@@ -88,5 +91,10 @@ public class MovieDetailSpider implements Runnable {
     });
 
     xmlValidator.validate();
+  }
+
+  private void persistToStorage(Movie movie) {
+    MovieRepository movieRepository = HibernateMovieRepository.getInstance();
+    movieRepository.create(movie);
   }
 }
