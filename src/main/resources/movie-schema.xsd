@@ -4,7 +4,7 @@
   <xs:element name="movie">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="unbounded" />
+        <xs:element name="id" type="xs:long" minOccurs="0" maxOccurs="1" />
         <xs:element name="title" type="xs:string" />
         <xs:element name="year" type="xs:unsignedShort" />
         <xs:element name="genre" type="xs:token" />

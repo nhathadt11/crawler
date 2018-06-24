@@ -3,6 +3,7 @@ package study.nhatha.util;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXB;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -37,6 +38,10 @@ public final class XmlUtils {
     Schema schema = factory.newSchema(schemaFile);
 
     return schema.newValidator();
+  }
+
+  public static <T> T unmarshal(InputStream xmlStreamIn, Class<T> clazz) {
+    return JAXB.unmarshal(xmlStreamIn, clazz);
   }
 
   private XmlUtils() {

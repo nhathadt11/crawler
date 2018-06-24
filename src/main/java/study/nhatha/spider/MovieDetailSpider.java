@@ -2,6 +2,7 @@ package study.nhatha.spider;
 
 import org.xml.sax.SAXException;
 import study.nhatha.middleware.TransformerMiddleware;
+import study.nhatha.model.Movie;
 import study.nhatha.util.AppConstants;
 import study.nhatha.util.NetUtils;
 import study.nhatha.util.StreamUtils;
@@ -75,12 +76,14 @@ public class MovieDetailSpider implements Runnable {
     XmlValidator xmlValidator = new XmlValidator(AppConstants.HD_MOVIE_SCHEMA, xmlContent, new XmlValidationHandler() {
       @Override
       public void onPassed() {
-        System.out.println("Passed\n");
+        System.out.println("PASSED\n");
+        Movie movie = XmlUtils.unmarshal(xmlContent, Movie.class);
+        System.out.println(movie.getTitle());
       }
 
       @Override
       public void onRejected(SAXException e) {
-        System.out.println("Rejected\n");
+        System.out.println("REJECTED / Reason: " + e.getMessage());
       }
     });
 

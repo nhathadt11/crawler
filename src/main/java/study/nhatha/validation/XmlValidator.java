@@ -24,6 +24,7 @@ public class XmlValidator {
       Validator validator = XmlUtils.buildValidator(schemaPath);
       validator.validate(new StreamSource(xmlSource));
 
+      xmlSource.reset();
       xmlValidationHandler.onPassed();
     } catch (IOException e) {
       e.printStackTrace();
