@@ -78,10 +78,9 @@ public class MovieDetailSpider implements Runnable {
     XmlValidator xmlValidator = new XmlValidator(AppConstants.HD_MOVIE_SCHEMA, xmlContent, new XmlValidationHandler() {
       @Override
       public void onPassed() {
-        System.out.println("PASSED\n");
         Movie movie = XmlUtils.unmarshal(xmlContent, Movie.class);
         persistToStorage(movie);
-        System.out.println(movie.getTitle());
+        System.out.println("PASSED / Title: " + movie.getTitle() + "\n");
       }
 
       @Override
@@ -94,7 +93,8 @@ public class MovieDetailSpider implements Runnable {
   }
 
   private void persistToStorage(Movie movie) {
-    MovieRepository movieRepository = HibernateMovieRepository.getInstance();
-    movieRepository.create(movie);
+    HibernateMovieRepository
+        .getInstance()
+        .create(movie);
   }
 }
