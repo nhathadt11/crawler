@@ -9,9 +9,9 @@
         <xs:element name="year" type="xs:unsignedShort" />
         <xs:element name="genre" type="xs:string" />
         <xs:element name="country" type="xs:string" />
-        <xs:element name="duration" type="xs:unsignedShort" />
+        <xs:element name="duration" type="xs:unsignedShort" nillable="true" />
         <xs:element name="director" type="xs:string" />
-        <xs:element name="rating" type="xs:decimal" />
+        <xs:element name="rating" type="xs:decimal" nillable="true" />
         <xs:element name="plot" type="xs:string" />
         <xs:element name="stars" type="xs:string" />
       </xs:sequence>

@@ -49,7 +49,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   }
 
   public void crawl() throws IOException {
-    for (int i = 1; i < 43; i++) {
+    for (int i = 1; i <= totalPageNumber; i++) {
       crawlSinglePage(i);
     }
   }
