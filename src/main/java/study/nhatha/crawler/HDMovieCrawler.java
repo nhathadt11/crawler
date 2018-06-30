@@ -1,10 +1,12 @@
 package study.nhatha.crawler;
 
 import study.nhatha.middleware.*;
-import study.nhatha.util.AppConstants;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static study.nhatha.util.AppConstants.HD_MOVIE_STYLE_SHEET;
+import static study.nhatha.util.AppConstants.HD_MOVIE_TOTAL_PAGE_NUMBER;
 
 public class HDMovieCrawler extends AbstractMovieCrawler {
   private static List<TransformerMiddleware.Transform> transforms;
@@ -15,6 +17,7 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
 
   private HDMovieCrawler(String baseUrl,
                          String pageUrlTemplate,
+                         int totalPageNumber,
                          String detailLinkExtractor,
                          int detailLinkExtractorGroupNumber,
                          String movieDetailHtmlFragmentExtractor,
@@ -24,6 +27,7 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
     super(
         baseUrl,
         pageUrlTemplate,
+        totalPageNumber,
         detailLinkExtractor,
         detailLinkExtractorGroupNumber,
         movieDetailHtmlFragmentExtractor,
@@ -37,11 +41,12 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
     this(
         "http://hdonline.vn/xem-phim-hoat-hinh/",
         "trang-%d.html",
+        HD_MOVIE_TOTAL_PAGE_NUMBER,
         "<div class=\"tn-bxitem\"><a href=\"(.+?)\"",
         1,
         "(<div class=\"block-movie\".+?<\\/div>.+?)<div class=\"block-movie\"",
         1,
-        AppConstants.HD_MOVIE_STYLE_SHEET,
+        HD_MOVIE_STYLE_SHEET,
         transforms
     );
   }

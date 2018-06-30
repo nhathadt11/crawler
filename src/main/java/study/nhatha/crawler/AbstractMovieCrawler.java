@@ -18,6 +18,7 @@ import static study.nhatha.util.StringUtils.normalize;
 public abstract class AbstractMovieCrawler implements Crawlable {
   private String baseUrl;
   private String pageUrlTemplate;
+  private int totalPageNumber;
   private String detailLinkExtractor;
   private int detailLinkExtractorGroupNumber;
   private String movieDetailHtmlFragmentExtractor;
@@ -28,6 +29,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   AbstractMovieCrawler(
       String baseUrl,
       String pageUrlTemplate,
+      int totalPageNumber,
       String detailLinkExtractor,
       int detailLinkExtractorGroupNumber,
       String movieDetailHtmlFragmentExtractor,
@@ -37,6 +39,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
 
     this.baseUrl = baseUrl;
     this.pageUrlTemplate = pageUrlTemplate;
+    this.totalPageNumber = totalPageNumber;
     this.detailLinkExtractor = detailLinkExtractor;
     this.detailLinkExtractorGroupNumber = detailLinkExtractorGroupNumber;
     this.movieDetailHtmlFragmentExtractor = movieDetailHtmlFragmentExtractor;
@@ -46,10 +49,16 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   }
 
   public void crawl() throws IOException {
+    for (int i = 1; i < 43; i++) {
+      crawlSinglePage(i);
+    }
+  }
+
+  private void crawlSinglePage(int pageNumber) throws IOException {
     String pageFullLink = getPageFullLink(
         this.baseUrl,
         this.pageUrlTemplate,
-        1
+        pageNumber
     );
 
     BufferedReader reader = toBufferedReader(connect(pageFullLink));
