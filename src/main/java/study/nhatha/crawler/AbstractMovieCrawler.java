@@ -21,6 +21,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
   private String detailLinkExtractor;
   private int detailLinkExtractorGroupNumber;
   private String movieDetailHtmlFragmentExtractor;
+  private int movieDetailHtmlFragmentExtractorGroupNumber;
   private String stylesheetPath;
   private List<TransformerMiddleware.Transform> transforms;
 
@@ -30,6 +31,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
       String detailLinkExtractor,
       int detailLinkExtractorGroupNumber,
       String movieDetailHtmlFragmentExtractor,
+      int movieDetailHtmlFragmentExtractorGroupNumber,
       String stylesheetPath,
       List<TransformerMiddleware.Transform> transforms) {
 
@@ -38,6 +40,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
     this.detailLinkExtractor = detailLinkExtractor;
     this.detailLinkExtractorGroupNumber = detailLinkExtractorGroupNumber;
     this.movieDetailHtmlFragmentExtractor = movieDetailHtmlFragmentExtractor;
+    this.movieDetailHtmlFragmentExtractorGroupNumber = movieDetailHtmlFragmentExtractorGroupNumber;
     this.stylesheetPath = stylesheetPath;
     this.transforms = transforms;
   }
@@ -64,7 +67,7 @@ public abstract class AbstractMovieCrawler implements Crawlable {
             new MovieDetailSpider(
                 movieDetailLink,
                 this.movieDetailHtmlFragmentExtractor,
-                1,
+                this.movieDetailHtmlFragmentExtractorGroupNumber,
                 getResource(stylesheetPath),
                 this.transforms
             )

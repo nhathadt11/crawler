@@ -4,7 +4,6 @@ import org.xml.sax.SAXException;
 import study.nhatha.middleware.TransformerMiddleware;
 import study.nhatha.model.Movie;
 import study.nhatha.repository.HibernateMovieRepository;
-import study.nhatha.repository.MovieRepository;
 import study.nhatha.util.AppConstants;
 import study.nhatha.util.NetUtils;
 import study.nhatha.util.StreamUtils;

@@ -18,6 +18,7 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
                          String detailLinkExtractor,
                          int detailLinkExtractorGroupNumber,
                          String movieDetailHtmlFragmentExtractor,
+                         int movieDetailHtmlFragmentExtractorGroupNumber,
                          String stylesheetPath,
                          List<TransformerMiddleware.Transform> transforms) {
     super(
@@ -26,6 +27,7 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
         detailLinkExtractor,
         detailLinkExtractorGroupNumber,
         movieDetailHtmlFragmentExtractor,
+        movieDetailHtmlFragmentExtractorGroupNumber,
         stylesheetPath,
         transforms
     );
@@ -38,6 +40,7 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
         "<div class=\"tn-bxitem\"><a href=\"(.+?)\"",
         1,
         "(<div class=\"block-movie\".+?<\\/div>.+?)<div class=\"block-movie\"",
+        1,
         AppConstants.HD_MOVIE_STYLE_SHEET,
         transforms
     );
