@@ -15,30 +15,8 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
     transforms = getTransformLogicList();
   }
 
-  private HDMovieCrawler(String baseUrl,
-                         String pageUrlTemplate,
-                         int totalPageNumber,
-                         String detailLinkExtractor,
-                         int detailLinkExtractorGroupNumber,
-                         String movieDetailHtmlFragmentExtractor,
-                         int movieDetailHtmlFragmentExtractorGroupNumber,
-                         String stylesheetPath,
-                         List<TransformerMiddleware.Transform> transforms) {
-    super(
-        baseUrl,
-        pageUrlTemplate,
-        totalPageNumber,
-        detailLinkExtractor,
-        detailLinkExtractorGroupNumber,
-        movieDetailHtmlFragmentExtractor,
-        movieDetailHtmlFragmentExtractorGroupNumber,
-        stylesheetPath,
-        transforms
-    );
-  }
-
   public HDMovieCrawler() {
-    this(
+    super(
         "http://hdonline.vn/xem-phim-hoat-hinh/",
         "trang-%d.html",
         HD_MOVIE_TOTAL_PAGE_NUMBER,
