@@ -65,7 +65,7 @@ public class MovieDetailSpider implements Runnable {
             .apply();
 
         ByteArrayOutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
-        System.out.println(outputStream);
+//        System.out.println(outputStream);
 
         validateXml(StreamUtils.toInputStream(outputStream));
       }
@@ -77,8 +77,8 @@ public class MovieDetailSpider implements Runnable {
   private void validateXml(InputStream xmlContent) {
     XmlValidator xmlValidator = new XmlValidator(AppConstants.MOVIE_SCHEMA, xmlContent, new XmlValidationHandler() {
       @Override
-      public void onPassed() {
-        Movie movie = XmlUtils.unmarshal(xmlContent, Movie.class);
+      public void onPassed(InputStream validXmlContent) {
+        Movie movie = XmlUtils.unmarshal(validXmlContent, Movie.class);
         persistToStorage(movie);
         System.out.println("PASSED / Title: " + movie.getTitle() + "\n");
       }

@@ -25,7 +25,7 @@ public class XmlValidator {
       validator.validate(new StreamSource(xmlSource));
 
       xmlSource.reset();
-      xmlValidationHandler.onPassed();
+      xmlValidationHandler.onPassed(xmlSource);
     } catch (IOException e) {
       e.printStackTrace();
     } catch (SAXException e) {
