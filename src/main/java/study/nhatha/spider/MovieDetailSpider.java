@@ -59,10 +59,7 @@ public class MovieDetailSpider implements Runnable {
       if (matcher.find()) {
         String movieDetailHtmlFragment = matcher.group(htmlFragmentExtractorGroupNumber);
 
-        TransformerMiddleware middleware = new TransformerMiddleware(movieDetailHtmlFragment);
-        String processed = middleware
-            .useAll(tranforms)
-            .apply();
+        String processed = makeWellFormed(movieDetailHtmlFragment);
 
         ByteArrayOutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
 //        System.out.println(outputStream);
@@ -72,6 +69,13 @@ public class MovieDetailSpider implements Runnable {
     } catch (IOException | TransformerException e) {
       System.out.println("ERROR / " + e.getMessage());
     }
+  }
+
+  private String makeWellFormed(String nonWellFormed) {
+    return
+        new TransformerMiddleware(nonWellFormed)
+        .useAll(tranforms)
+        .apply();
   }
 
   private void validateXml(InputStream xmlContent) {
