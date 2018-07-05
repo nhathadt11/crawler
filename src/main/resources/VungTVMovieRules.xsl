@@ -41,6 +41,10 @@
           <xsl:with-param name="stars" select="//ul[@class='infomation-film']/li[6]"/>
         </xsl:call-template>
       </stars>
+
+      <image>
+        <xsl:value-of select="//img[@itemprop='image']/@src" />
+      </image>
     </movie>
   </xsl:template>
 

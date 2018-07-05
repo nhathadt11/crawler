@@ -42,6 +42,10 @@
           <xsl:with-param name="stars" select="//div[@class='group-filminfo']/div" />
         </xsl:call-template>
       </stars>
+
+      <image>
+        <xsl:value-of select="//img[@itemprop='image']/@src" />
+      </image>
     </movie>
   </xsl:template>
 
