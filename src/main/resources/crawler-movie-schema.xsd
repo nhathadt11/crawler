@@ -15,6 +15,7 @@
         <xs:element name="plot" type="xs:string" />
         <xs:element name="stars" type="xs:string" />
         <xs:element name="image" type="xs:string" />
+        <xs:element name="url" type="xs:string" nillable="true" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

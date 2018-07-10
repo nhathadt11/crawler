@@ -83,7 +83,10 @@ public class MovieDetailSpider implements Runnable {
       @Override
       public void onPassed(InputStream validXmlContent) {
         Movie movie = XmlUtils.unmarshal(validXmlContent, Movie.class);
+        movie.setUrl(url);
+
         persistToStorage(movie);
+
         System.out.println("PASSED / Title: " + movie.getTitle() + "\n");
       }
 
