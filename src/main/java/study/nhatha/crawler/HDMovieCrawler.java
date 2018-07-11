@@ -17,8 +17,8 @@ public class HDMovieCrawler extends AbstractMovieCrawler {
 
   public HDMovieCrawler() {
     super(
-        "http://hdonline.vn/xem-phim-hoat-hinh/",
-        "trang-%d.html",
+        "http://hdonline.vn",
+        "/xem-phim-hoat-hinh/trang-%d.html",
         HD_MOVIE_TOTAL_PAGE_NUMBER,
         "<div class=\"tn-bxitem\"><a href=\"(.+?)\"",
         1,

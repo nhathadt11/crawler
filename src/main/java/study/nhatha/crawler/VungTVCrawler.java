@@ -18,8 +18,8 @@ public class VungTVCrawler extends AbstractMovieCrawler {
 
   public VungTVCrawler() {
     super(
-        "http://vung.tv/",
-        "filter/page/%d?the-loai=hanh-dong",
+        "http://vung.tv",
+        "/filter/page/%d?the-loai=hanh-dong",
         VUNG_TV_MOVIE_TOTAL_PAGE_NUMBER,
         "<a href=\"(.*?)\" class=\".*?film-small\">",
         1,
