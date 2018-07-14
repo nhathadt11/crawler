@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<xsl:stylesheet version="1.0"
+<xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:output omit-xml-declaration="yes" indent="yes" />
 
@@ -46,6 +46,8 @@
       <image>
         <xsl:value-of select="//img[@itemprop='image']/@src" />
       </image>
+
+      <url />
     </movie>
   </xsl:template>
 
@@ -60,8 +62,6 @@
 
   <xsl:template name="collect-stars">
     <xsl:param name="stars" />
-    <xsl:for-each select="$stars//li//span/a/text()">
-      <xsl:value-of select="concat(self::text(), ', ')"/>
-    </xsl:for-each>
+    <xsl:value-of select="string-join($stars//li//span/a, ', ')"/>
   </xsl:template>
 </xsl:stylesheet>

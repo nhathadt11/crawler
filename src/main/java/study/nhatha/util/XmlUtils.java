@@ -22,7 +22,7 @@ public final class XmlUtils {
 
   public static ByteArrayOutputStream transform(InputStream source, InputStream rulesIn)
       throws TransformerException {
-    TransformerFactory factory = TransformerFactory.newInstance();
+    TransformerFactory factory = TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
     Transformer transformer = factory.newTransformer(new StreamSource(rulesIn));
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
