@@ -5,19 +5,26 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="id" type="xs:long" minOccurs="0" />
-        <xs:element name="title" type="xs:string" />
+        <xs:element name="title" type="NonEmptyString" />
         <xs:element name="year" type="xs:unsignedShort" />
         <xs:element name="genre" type="xs:string" />
         <xs:element name="country" type="xs:string" />
         <xs:element name="duration" type="xs:unsignedShort" nillable="true" />
         <xs:element name="director" type="xs:string" />
         <xs:element name="rating" type="xs:decimal" nillable="true" />
-        <xs:element name="plot" type="xs:string" />
+        <xs:element name="plot" type="NonEmptyString" />
         <xs:element name="stars" type="xs:string" />
         <xs:element name="image" type="xs:string" />
         <xs:element name="url" type="xs:string" nillable="true" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+
+  <xs:simpleType name="NonEmptyString">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1" />
+      <xs:pattern value=".*[^\s].*" />
+    </xs:restriction>
+  </xs:simpleType>
 
 </xs:schema>

@@ -92,7 +92,7 @@ public class MovieDetailSpider implements Runnable {
 
       @Override
       public void onRejected(SAXException e) {
-        System.out.println("REJECTED / Reason: " + e.getMessage());
+        System.out.printf("REJECTED / Reason: %s Url: %s%n", e.getMessage(), url);
       }
     });
 
