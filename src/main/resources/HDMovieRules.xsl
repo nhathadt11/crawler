@@ -107,7 +107,7 @@
     <xsl:choose>
       <xsl:when test="matches($rating, '^\d+(\.\d{1,2})?$')">
         <rating>
-          <xsl:value-of select="normalize-space($rating)"/>
+          <xsl:value-of select="$rating"/>
         </rating>
       </xsl:when>
       <xsl:otherwise>

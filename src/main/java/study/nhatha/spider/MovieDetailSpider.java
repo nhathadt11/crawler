@@ -70,7 +70,7 @@ public class MovieDetailSpider implements Runnable {
         validateXml(StreamUtils.toInputStream(outputStream));
       }
     } catch (IOException | TransformerException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error(String.format("[REASON]: %s [URL]: %s", e.getMessage(), url));
     }
   }
 
@@ -90,13 +90,13 @@ public class MovieDetailSpider implements Runnable {
 
         persistToStorage(movie);
 
-        LOGGER.info(String.format("[PASSED] Title: %s", movie.getTitle()));
+        LOGGER.info(String.format("[PASSED][TITLE]: %s", movie.getTitle()));
       }
 
       @Override
       public void onRejected(SAXException e) {
-        LOGGER.error(String.format("[REJECTED] Reason: %s Url: %s", e.getMessage(), url));
-        LOGGER.error(String.format("[XML Content]: %s", StreamUtils.toString(xmlContent)));
+        LOGGER.error(String.format("[REJECTED][REASON]: %s [URL]: %s", e.getMessage(), url));
+        LOGGER.error(String.format("[XML CONTENT]: %s", StreamUtils.toString(xmlContent)));
       }
     });
 
