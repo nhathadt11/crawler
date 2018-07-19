@@ -2,9 +2,10 @@ package study.nhatha.validation;
 
 import org.xml.sax.SAXException;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public interface XmlValidationHandler {
   void onPassed(InputStream validXmlContent);
-  void onRejected(SAXException e);
+  void onRejected(SAXException e) throws IOException;
 }

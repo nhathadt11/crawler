@@ -1,5 +1,7 @@
 package study.nhatha.validation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import study.nhatha.util.XmlUtils;
 
@@ -9,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class XmlValidator {
+  private static final Logger LOGGER = LoggerFactory.getLogger(XmlValidator.class);
   private String schemaPath;
   private InputStream xmlSource;
   private XmlValidationHandler xmlValidationHandler;
@@ -19,7 +22,7 @@ public class XmlValidator {
     this.xmlValidationHandler = xmlValidationHandler;
   }
 
-  public void validate() {
+  public void validate() throws IOException {
     try {
       Validator validator = XmlUtils.buildValidator(schemaPath);
       validator.validate(new StreamSource(xmlSource));
@@ -27,8 +30,9 @@ public class XmlValidator {
       xmlSource.reset();
       xmlValidationHandler.onPassed(xmlSource);
     } catch (IOException e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage());
     } catch (SAXException e) {
+      xmlSource.reset();
       xmlValidationHandler.onRejected(e);
     }
   }

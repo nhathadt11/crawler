@@ -27,12 +27,12 @@ import static study.nhatha.util.StringUtils.normalize;
 import static study.nhatha.util.StringUtils.toInputStream;
 
 public class MovieDetailSpider implements Runnable {
+  private static final Logger LOGGER = LoggerFactory.getLogger(MovieDetailSpider.class);
   private String url;
   private String htmlFragmentExtractor;
   private int htmlFragmentExtractorGroupNumber;
   private InputStream stylesheetStream;
   private List<TransformerMiddleware.Transform> tranforms;
-  private static final Logger logger = LoggerFactory.getLogger(MovieDetailSpider.class);
 
   public MovieDetailSpider(
       String url,
@@ -50,7 +50,7 @@ public class MovieDetailSpider implements Runnable {
 
   @Override
   public void run() {
-    logger.info("GET / " + url);
+    LOGGER.info(String.format("[GET] URL:%s", url));
 
     try (InputStream inputStream = NetUtils.connect(url)) {
       BufferedReader reader = toBufferedReader(inputStream);
@@ -65,12 +65,12 @@ public class MovieDetailSpider implements Runnable {
         String processed = makeWellFormed(movieDetailHtmlFragment);
 
         ByteArrayOutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
-        logger.info(outputStream);
+//        LOGGER.info(outputStream.toString());
 
         validateXml(StreamUtils.toInputStream(outputStream));
       }
     } catch (IOException | TransformerException e) {
-      logger.error(e.getMessage());
+      LOGGER.error(e.getMessage());
     }
   }
 
@@ -81,7 +81,7 @@ public class MovieDetailSpider implements Runnable {
         .apply();
   }
 
-  private void validateXml(InputStream xmlContent) {
+  private void validateXml(InputStream xmlContent) throws IOException {
     XmlValidator xmlValidator = new XmlValidator(AppConstants.MOVIE_SCHEMA, xmlContent, new XmlValidationHandler() {
       @Override
       public void onPassed(InputStream validXmlContent) {
@@ -90,12 +90,13 @@ public class MovieDetailSpider implements Runnable {
 
         persistToStorage(movie);
 
-        logger.info("PASSED / Title: " + movie.getTitle());
+        LOGGER.info(String.format("[PASSED] Title: %s", movie.getTitle()));
       }
 
       @Override
       public void onRejected(SAXException e) {
-        logger.error(String.format("REJECTED / Reason: %s Url: %s", e.getMessage(), url));
+        LOGGER.error(String.format("[REJECTED] Reason: %s Url: %s", e.getMessage(), url));
+        LOGGER.error(String.format("[XML Content]: %s", StreamUtils.toString(xmlContent)));
       }
     });
 
