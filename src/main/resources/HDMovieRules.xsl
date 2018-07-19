@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xsl:output omit-xml-declaration="yes" indent="yes" />
 
   <xsl:template match="//div[@class='block-movie']">
     <movie>
       <title>
-        <xsl:value-of select="//ul[@class='filminfo-fields']//li[2]//strong"/>
+        <xsl:call-template name="title">
+          <xsl:with-param name="title" select="//ul[@class='filminfo-fields']/li[contains(text(), 'Tên Phim')]"/>
+        </xsl:call-template>
       </title>
 
       <year>
-        <xsl:value-of select="//ul[@class='filminfo-fields']//li[4]/a"/>
+        <xsl:call-template name="year">
+          <xsl:with-param name="year" select="//ul[@class='filminfo-fields']/li[contains(text(), 'Năm sản xuất')]"/>
+        </xsl:call-template>
       </year>
 
       <genre>
-        <xsl:value-of select="//ul[@class='filminfo-fields']//li[5]/strong"/>
+        <xsl:call-template name="genre">
+          <xsl:with-param name="genre" select="//ul[@class='filminfo-fields']/li[contains(text(), 'Thể loại')]"/>
+        </xsl:call-template>
       </genre>
 
       <country>
-        <xsl:value-of select="//ul[@class='filminfo-fields']//li[6]//a"/>
+        <xsl:call-template name="country">
+          <xsl:with-param name="country" select="//ul[@class='filminfo-fields']/li[contains(text(), 'Quốc gia')]"/>
+        </xsl:call-template>
       </country>
 
       <duration>
-        <xsl:apply-templates select="//ul[@class='filminfo-fields']//li[7]"/>
+        <xsl:call-template name="duration">
+          <xsl:with-param name="duration" select="//ul[@class='filminfo-fields']/li[contains(text(), 'Thời lượng')]"/>
+        </xsl:call-template>
       </duration>
 
-      <director>
-        <xsl:value-of select="//ul[@class='filminfo-fields']//li[8]//a"/>
-      </director>
+      <xsl:call-template name="director">
+        <xsl:with-param name="director" select="//ul[@class='filminfo-fields']/li[contains(text(), 'Đạo diễn')]"/>
+      </xsl:call-template>
 
-      <rating>
-        <xsl:apply-templates select="//ul[@class='filminfo-fields']//li[9]"/>
-      </rating>
+      <xsl:call-template name="rating">
+        <xsl:with-param name="rating" select="//ul[@class='filminfo-fields']/li[last()]"/>
+      </xsl:call-template>
 
       <plot>
         <xsl:value-of select="//div[@itemprop='description']"/>
@@ -51,13 +62,58 @@
     </movie>
   </xsl:template>
 
-  <xsl:template match="//ul[@class='filminfo-fields']//li[7]">
-    <xsl:variable name="durationWithUnit" select="substring-after(text(), ': ')"/>
+  <xsl:template name="title">
+    <xsl:param name="title" />
+    <xsl:value-of select="$title//strong"/>
+  </xsl:template>
+
+  <xsl:template name="year">
+    <xsl:param name="year" />
+    <xsl:value-of select="$year/a"/>
+  </xsl:template>
+
+  <xsl:template name="genre">
+    <xsl:param name="genre" />
+    <xsl:value-of select="$genre/strong"/>
+  </xsl:template>
+
+  <xsl:template name="country">
+    <xsl:param name="country" />
+    <xsl:value-of select="$country//a"/>
+  </xsl:template>
+
+  <xsl:template name="duration">
+    <xsl:param name="duration"/>
+    <xsl:variable name="durationWithUnit" select="substring-after($duration/text(), ': ')"/>
     <xsl:value-of select="substring-before($durationWithUnit, ' ')"/>
   </xsl:template>
 
-  <xsl:template match="//ul[@class='filminfo-fields']//li[9]">
-    <xsl:value-of select="normalize-space(.)"/>
+  <xsl:template name="director">
+    <xsl:param name="director" />
+    <xsl:choose>
+      <xsl:when test="normalize-space($director)">
+        <director>
+          <xsl:value-of select="$director//a"/>
+        </director>
+      </xsl:when>
+      <xsl:otherwise>
+        <director>N/A</director>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="rating">
+    <xsl:param name="rating" />
+    <xsl:choose>
+      <xsl:when test="matches($rating, '^\d+(\.\d{1,2})?$')">
+        <rating>
+          <xsl:value-of select="normalize-space($rating)"/>
+        </rating>
+      </xsl:when>
+      <xsl:otherwise>
+        <rating xsi:nil="true" />
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template name="collect-stars">
