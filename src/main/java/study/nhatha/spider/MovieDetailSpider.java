@@ -1,5 +1,7 @@
 package study.nhatha.spider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import study.nhatha.middleware.TransformerMiddleware;
 import study.nhatha.model.Movie;
@@ -30,6 +32,7 @@ public class MovieDetailSpider implements Runnable {
   private int htmlFragmentExtractorGroupNumber;
   private InputStream stylesheetStream;
   private List<TransformerMiddleware.Transform> tranforms;
+  private static final Logger logger = LoggerFactory.getLogger(MovieDetailSpider.class);
 
   public MovieDetailSpider(
       String url,
@@ -47,7 +50,7 @@ public class MovieDetailSpider implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("GET / " + url);
+    logger.info("GET / " + url);
 
     try (InputStream inputStream = NetUtils.connect(url)) {
       BufferedReader reader = toBufferedReader(inputStream);
@@ -62,12 +65,12 @@ public class MovieDetailSpider implements Runnable {
         String processed = makeWellFormed(movieDetailHtmlFragment);
 
         ByteArrayOutputStream outputStream = XmlUtils.transform(toInputStream(processed), stylesheetStream);
-//        System.out.println(outputStream);
+        logger.info(outputStream);
 
         validateXml(StreamUtils.toInputStream(outputStream));
       }
     } catch (IOException | TransformerException e) {
-      System.out.println("ERROR / " + e.getMessage());
+      logger.error(e.getMessage());
     }
   }
 
@@ -87,12 +90,12 @@ public class MovieDetailSpider implements Runnable {
 
         persistToStorage(movie);
 
-        System.out.println("PASSED / Title: " + movie.getTitle() + "\n");
+        logger.info("PASSED / Title: " + movie.getTitle());
       }
 
       @Override
       public void onRejected(SAXException e) {
-        System.out.printf("REJECTED / Reason: %s Url: %s%n", e.getMessage(), url);
+        logger.error(String.format("REJECTED / Reason: %s Url: %s", e.getMessage(), url));
       }
     });
 

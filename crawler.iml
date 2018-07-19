@@ -14,5 +14,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: study.nhatha:movie-persistent:0.1" level="project" />
     <orderEntry type="library" name="Maven: net.sf.saxon:Saxon-HE:9.8.0-12" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-jdk14:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
   </component>
 </module>
